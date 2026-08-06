@@ -1,0 +1,340 @@
+/* ==========================================================================
+   iddygames.com — palette and typefaces are Skuffle's own in-game HUD system,
+   so the site and the game read as one thing.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("../fonts/BebasNeue-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Saira Condensed";
+  src: url("../fonts/SairaCondensed-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Saira Condensed";
+  src: url("../fonts/SairaCondensed-Bold.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Share Tech Mono";
+  src: url("../fonts/ShareTechMono-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* HudPalette: BG / INK / DIM / FNT */
+  --bg:      #04080d;
+  --panel:   #08111b;
+  --raise:   #0d1826;
+  --ink:     #e9eef2;
+  --dim:     rgba(233, 238, 242, 0.62);
+  --faint:   rgba(233, 238, 242, 0.34);
+
+  /* HudPalette: per-seat accent hues */
+  --p1: #ff3d5a;  /* CRIMSON */
+  --p2: #2fb8ff;  /* CYAN    */
+  --p3: #ffd23f;  /* AMBER   */
+  --p4: #5ee34a;  /* LIME    */
+  --teal: #3bd6e0;
+
+  --hair:  rgba(59, 214, 224, 0.22);
+  --hairs: rgba(255, 255, 255, 0.08);
+
+  --font-display: "Bebas Neue", "Haettenschweiler", "Arial Narrow", sans-serif;
+  --font-body:    "Saira Condensed", "Roboto Condensed", system-ui, sans-serif;
+  --font-mono:    "Share Tech Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --measure: 62ch;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --wrap: 1180px;
+
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  line-height: 1.6;
+  /* faint scanline haze, echoes the game's PSX-era presentation */
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(59, 214, 224, 0.07), transparent 60%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.014) 0 1px,
+      transparent 1px 3px
+    );
+  background-attachment: fixed;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--teal); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--ink); }
+
+:focus-visible {
+  outline: 2px solid var(--p3);
+  outline-offset: 3px;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────────── */
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.94;
+  text-wrap: balance;
+  margin: 0;
+}
+
+h1 { font-size: clamp(3.5rem, 11vw, 8.5rem); }
+h2 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
+h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+
+p { margin: 0; max-width: var(--measure); }
+
+/* Mono eyebrow — the HUD's own label idiom (FRAGS, LEE ENFIELD, P01) */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0;
+}
+
+.lede { font-size: 1.2em; color: var(--dim); }
+
+/* ── Layout primitives ──────────────────────────────────────────────────── */
+
+.wrap {
+  width: min(100% - var(--gutter) * 2, var(--wrap));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: clamp(3.5rem, 9vw, 7rem);
+  border-top: 1px solid var(--hairs);
+}
+
+.stack { display: flex; flex-direction: column; gap: 1.25rem; }
+.stack-lg { display: flex; flex-direction: column; gap: 2.5rem; }
+
+/* ── Site chrome ────────────────────────────────────────────────────────── */
+
+.skip {
+  position: absolute; left: -9999px;
+  background: var(--p3); color: var(--bg);
+  padding: 0.5rem 1rem; font-family: var(--font-mono);
+}
+.skip:focus { left: 1rem; top: 1rem; z-index: 10; }
+
+.masthead {
+  display: flex; flex-wrap: wrap; gap: 1rem 2rem;
+  align-items: baseline; justify-content: space-between;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid var(--hairs);
+}
+
+.brand { display: inline-flex; align-items: center; text-decoration: none; }
+.brand img { height: 2.4rem; width: auto; display: block; }
+
+.nav { display: flex; gap: 1.75rem; font-family: var(--font-mono);
+       font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; }
+.nav a { color: var(--dim); text-decoration: none; padding-block: 0.25rem; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--ink); }
+.nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--p2); }
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+
+.hero { position: relative; padding-block: clamp(2rem, 5vw, 4rem) 0; overflow: hidden; }
+
+.hero-grid {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr 1.15fr; }
+}
+
+.hero h1 { color: var(--ink); }
+
+/* Seat-coloured rule under the wordmark: four players, four bars. */
+.seatbar { display: flex; height: 5px; width: 100%; max-width: 30rem; }
+.seatbar i { flex: 1; }
+.seatbar i:nth-child(1) { background: var(--p1); }
+.seatbar i:nth-child(2) { background: var(--p2); }
+.seatbar i:nth-child(3) { background: var(--p3); }
+.seatbar i:nth-child(4) { background: var(--p4); }
+
+.hero-art { position: relative; }
+.hero-art img {
+  width: 100%;
+  filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.85));
+}
+
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0.85rem 1.5rem;
+  text-decoration: none;
+  border: 1px solid var(--hair);
+  color: var(--ink);
+  background: var(--panel);
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.btn:hover { background: var(--raise); border-color: var(--teal); color: var(--ink); }
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--p1); border-color: var(--p1); color: #12040a; font-weight: 700;
+}
+.btn-primary:hover { background: #ff6c82; border-color: #ff6c82; color: #12040a; }
+
+.status {
+  font-family: var(--font-mono); font-size: 0.78rem;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint);
+}
+
+/* ── Seat panels (the lobby card, reused as a content module) ───────────── */
+
+.panels {
+  display: grid; gap: 1px;
+  background: var(--hairs);
+  border: 1px solid var(--hairs);
+}
+@media (min-width: 700px)  { .panels { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .panels-4 { grid-template-columns: repeat(4, 1fr); } }
+
+.panel {
+  background: var(--panel);
+  padding: 1.5rem 1.4rem 1.75rem;
+  display: flex; flex-direction: column; gap: 0.7rem;
+  border-top: 3px solid var(--seat, var(--teal));
+}
+.panel h3 { color: var(--seat, var(--ink)); }
+.panel p { color: var(--dim); font-size: 0.98rem; }
+.panel .label { color: var(--seat); opacity: 0.75; }
+
+.seat-1 { --seat: var(--p1); }
+.seat-2 { --seat: var(--p2); }
+.seat-3 { --seat: var(--p3); }
+.seat-4 { --seat: var(--p4); }
+
+/* ── Screenshot strip — letterboxed like the split-screen divide ─────────── */
+
+.shots { display: grid; gap: 3px; background: #000; padding: 3px; }
+@media (min-width: 800px) { .shots { grid-template-columns: 1fr 1fr; } }
+.shot { position: relative; margin: 0; }
+.shot img { width: 100%; }
+.shot figcaption {
+  position: absolute; left: 0; bottom: 0;
+  font-family: var(--font-mono); font-size: 0.7rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(0, 0, 0, 0.66);
+  padding: 0.4rem 0.7rem;
+}
+.shot-wide { grid-column: 1 / -1; }
+
+/* ── Split feature block (Bosco) ────────────────────────────────────────── */
+
+.split {
+  display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center;
+}
+@media (min-width: 860px) { .split { grid-template-columns: 0.9fr 1.1fr; } }
+.split-art img { width: 100%; filter: drop-shadow(0 18px 44px rgba(0, 0, 0, 0.8)); }
+
+/* ── Spec list (press fact sheet) ───────────────────────────────────────── */
+
+.specs { margin: 0; display: grid; gap: 1px; background: var(--hairs);
+         border: 1px solid var(--hairs); }
+@media (min-width: 620px) { .specs { grid-template-columns: auto 1fr; } }
+.specs dt {
+  background: var(--panel); padding: 0.7rem 1rem;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint);
+}
+.specs dd {
+  background: var(--panel); padding: 0.7rem 1rem; margin: 0; color: var(--dim);
+}
+
+/* ── FAQ ────────────────────────────────────────────────────────────────── */
+
+.faq { display: flex; flex-direction: column; gap: 1px;
+       background: var(--hairs); border: 1px solid var(--hairs); }
+
+.faq details { background: var(--panel); }
+.faq summary {
+  cursor: pointer; list-style: none;
+  padding: 1.05rem 1.25rem;
+  font-family: var(--font-body); font-weight: 700;
+  font-size: 1.05rem;
+  display: flex; align-items: baseline; gap: 0.9rem;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before {
+  content: "+";
+  font-family: var(--font-mono); color: var(--teal);
+  flex: none; width: 1ch;
+}
+.faq details[open] summary::before { content: "\2212"; }
+.faq summary:hover { background: var(--raise); }
+.faq .answer { padding: 0 1.25rem 1.3rem 3.15rem; }
+.faq .answer p + p { margin-top: 0.8rem; }
+.faq .answer p { color: var(--dim); }
+.faq .answer ul { color: var(--dim); margin: 0.6rem 0 0; padding-left: 1.1rem; }
+.faq .answer li + li { margin-top: 0.35rem; }
+
+/* ── Contact card ───────────────────────────────────────────────────────── */
+
+.contact {
+  border: 1px solid var(--hair);
+  background: var(--panel);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+.contact .mail {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  color: var(--p3);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  word-break: break-word;
+}
+.contact .mail:hover { color: var(--ink); }
+
+/* ── Footer ─────────────────────────────────────────────────────────────── */
+
+.foot {
+  border-top: 1px solid var(--hairs);
+  padding-block: 2.5rem 3.5rem;
+  display: flex; flex-wrap: wrap; gap: 1rem 2rem;
+  justify-content: space-between; align-items: baseline;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint);
+}
+.foot a { color: var(--dim); text-decoration: none; }
+.foot a:hover { color: var(--ink); }
+.foot ul { display: flex; flex-wrap: wrap; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
