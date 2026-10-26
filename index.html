@@ -9,16 +9,20 @@
 <meta property="og:description" content="4-player split-screen online party shooter. Couch and online players in the same match.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://iddygames.com/">
-<meta property="og:image" content="https://iddygames.com/assets/img/trio.webp">
+<meta property="og:image" content="https://iddygames.com/assets/img/og-keyart.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/LilitaOne-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
+<div class="topbar">
 <header class="wrap masthead">
   <a class="brand" href="/">
-    <img src="assets/img/iddy-logo.webp" alt="iddy Games" width="320" height="320">
+    <img src="assets/img/iddy-logo.webp" alt="iddy Games" width="1008" height="457">
   </a>
   <nav class="nav" aria-label="Main">
     <a href="/" aria-current="page">Skuffle</a>
@@ -26,25 +30,23 @@
     <a href="press.html">Press</a>
   </nav>
 </header>
+</div>
 
 <main id="main">
 
   <section class="hero wrap">
-    <div class="hero-grid">
-      <div class="stack">
-        <h1>Skuffle</h1>
-        <div class="seatbar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <p class="lede">A 4-player split-screen online party shooter. Couch and online
-        players in the same match.</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="https://store.steampowered.com/app/4816860/Skuffle/">Wishlist on Steam</a>
-        </div>
-        <p class="status">Coming 2027 &middot; Windows</p>
+    <h1 class="sr-only">Skuffle</h1>
+    <figure class="hero-art">
+      <img src="assets/img/keyart.webp" width="1920" height="1080" fetchpriority="high"
+           alt="Skuffle key art: the speech-bubble wordmark over an orange halftone, a man in a beret firing a tommy gun at a smoking clown with a rifle, a muzzle burst between them.">
+    </figure>
+    <div class="paper stack hero-caption">
+      <p class="lede">A 4-player split-screen online party shooter. Couch and online
+      players in the same match.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://store.steampowered.com/app/4816860/Skuffle/">Wishlist on Steam</a>
       </div>
-      <div class="hero-art">
-        <img src="assets/img/trio.webp" width="1500" height="920"
-             alt="Three Skuffle characters: a clown with a rocket launcher, a suited man with a revolver, and a grey mannequin in a patchwork suit holding a launcher.">
-      </div>
+      <p class="status">Coming 2027 &middot; Windows</p>
     </div>
   </section>
 
@@ -79,8 +81,8 @@
     </div>
   </section>
 
-  <section class="section wrap stack">
-    <div class="cta-row">
+  <section class="section wrap">
+    <div class="cta-row" style="justify-content: center;">
       <a class="btn btn-primary" href="https://store.steampowered.com/app/4816860/Skuffle/">Wishlist on Steam</a>
       <a class="btn" href="press.html">Press kit</a>
     </div>
@@ -88,6 +90,7 @@
 
 </main>
 
+<div class="footbar">
 <footer class="wrap foot">
   <p>&copy; 2026 iddy Games</p>
   <ul>
@@ -98,6 +101,7 @@
     <li><a href="mailto:support@iddygames.com">support@iddygames.com</a></li>
   </ul>
 </footer>
+</div>
 
 </body>
 </html>
