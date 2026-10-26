@@ -8,13 +8,15 @@ index.html        landing page
 support.html      support contact
 press.html        fact sheet, description, asset download
 assets/css        site.css — all styling, tokens in :root
-assets/fonts      Bebas Neue, Saira Condensed, Share Tech Mono (woff2, OFL)
+assets/fonts      Lilita One, Saira Condensed (woff2, OFL)
 assets/img        webp
 build_preview.py  bundles the three pages into one self-contained file
 ```
 
-Palette and typefaces are the game's own, so the site and the game read as one
-thing. Dark only, by design.
+Palette and typefaces are the game's own comic-page rebrand (ComicPalette:
+ink outlines with hard offset shadows, white paper, orange halftone, wood), so
+the site and the game read as one thing. Lilita One for headings, Saira
+Condensed for body. Key art and wordmark come from the Steam capsule set.
 
 ## Press assets
 

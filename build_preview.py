@@ -13,7 +13,7 @@ import re
 
 ROOT = pathlib.Path(__file__).parent
 PAGES = [("index.html", "skuffle"), ("support.html", "support"), ("press.html", "press")]
-MIME = {".woff2": "font/woff2", ".webp": "image/webp", ".zip": "application/zip"}
+MIME = {".woff2": "font/woff2", ".webp": "image/webp", ".jpg": "image/jpeg", ".zip": "application/zip"}
 
 
 def data_uri(path: pathlib.Path) -> str:

@@ -1,11 +1,13 @@
 /* ==========================================================================
-   iddygames.com — palette and typefaces are Skuffle's own in-game HUD system,
-   so the site and the game read as one thing.
+   iddygames.com — the comic-page look of Skuffle's 2026-10 rebrand: ink
+   outlines with a hard offset shadow, white paper, orange halftone, wood,
+   one yellow/red burst. Tokens are the game's ComicPalette
+   (Zambie/ui/theme/comic_palette.gd), so the site and the game read as one.
    ========================================================================== */
 
 @font-face {
-  font-family: "Bebas Neue";
-  src: url("../fonts/BebasNeue-Regular.woff2") format("woff2");
+  font-family: "Lilita One";
+  src: url("../fonts/LilitaOne-Regular.woff2") format("woff2");
   font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
@@ -18,40 +20,36 @@
   src: url("../fonts/SairaCondensed-Bold.woff2") format("woff2");
   font-weight: 700; font-style: normal; font-display: swap;
 }
-@font-face {
-  font-family: "Share Tech Mono";
-  src: url("../fonts/ShareTechMono-Regular.woff2") format("woff2");
-  font-weight: 400; font-style: normal; font-display: swap;
-}
 
 :root {
-  /* HudPalette: BG / INK / DIM / FNT */
-  --bg:      #04080d;
-  --panel:   #08111b;
-  --raise:   #0d1826;
-  --ink:     #e9eef2;
-  --dim:     rgba(233, 238, 242, 0.62);
-  --faint:   rgba(233, 238, 242, 0.34);
+  /* ComicPalette */
+  --orange:  #ffa312;   /* halftone ground */
+  --dot:     #865609;   /* halftone dot */
+  --burst:   #ffea1e;   /* burst yellow */
+  --red:     #ff1e00;   /* burst edge red */
+  --ink:     #0d0905;
+  --paper:   #ffffff;
+  --ink-soft:  rgba(13, 9, 5, 0.74);
 
-  /* HudPalette: per-seat accent hues */
-  --p1: #ff3d5a;  /* CRIMSON */
-  --p2: #2fb8ff;  /* CYAN    */
-  --p3: #ffd23f;  /* AMBER   */
-  --p4: #5ee34a;  /* LIME    */
-  --teal: #3bd6e0;
+  /* Seat hues (HudPalette) */
+  --p1: #ff3db0;
+  --p2: #2fb8ff;
+  --p3: #ffd23f;
+  --p4: #5ee34a;
 
-  --hair:  rgba(59, 214, 224, 0.22);
-  --hairs: rgba(255, 255, 255, 0.08);
+  --line:   3px;                     /* ink outline */
+  --shadow: 6px 6px 0 var(--ink);    /* hard, unblurred, down-right */
+  --shadow-sm: 3px 3px 0 var(--ink);
 
-  --font-display: "Bebas Neue", "Haettenschweiler", "Arial Narrow", sans-serif;
+  /* Lilita One is the general-use header face. */
+  --font-display: "Lilita One", "Arial Rounded MT Bold", "Arial Black", sans-serif;
   --font-body:    "Saira Condensed", "Roboto Condensed", system-ui, sans-serif;
-  --font-mono:    "Share Tech Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   --measure: 62ch;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --gutter: clamp(1rem, 4vw, 3rem);
   --wrap: 1180px;
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -60,30 +58,27 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-  line-height: 1.6;
-  /* faint scanline haze, echoes the game's PSX-era presentation */
-  background-image:
-    radial-gradient(120% 80% at 50% -10%, rgba(59, 214, 224, 0.07), transparent 60%),
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.014) 0 1px,
-      transparent 1px 3px
-    );
-  background-attachment: fixed;
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  /* Wood, like the game's calm menu screens. */
+  background: #b8650e url("../img/wood.webp") center top / 512px 512px repeat;
 }
 
 img { max-width: 100%; height: auto; display: block; }
 
-a { color: var(--teal); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { color: var(--ink); }
+main { flex: 1; }
+
+a { color: var(--ink); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+a:hover { color: var(--red); }
 
 :focus-visible {
-  outline: 2px solid var(--p3);
-  outline-offset: 3px;
+  outline: 3px solid var(--burst);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--ink);
 }
 
 /* ── Typography ─────────────────────────────────────────────────────────── */
@@ -92,28 +87,34 @@ h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: 0.01em;
-  line-height: 0.94;
+  line-height: 1;
   text-wrap: balance;
   margin: 0;
 }
 
-h1 { font-size: clamp(3.5rem, 11vw, 8.5rem); }
-h2 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
-h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); }
+h1 { font-size: clamp(3rem, 9vw, 6.5rem); }
+h2 { font-size: clamp(2.25rem, 5vw, 3.5rem); }
+h3 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); }
 
 p { margin: 0; max-width: var(--measure); }
 
-/* Mono eyebrow — the HUD's own label idiom (FRAGS, LEE ENFIELD, P01) */
+/* Ink tape: a label printed light on an ink strip, the game's caption idiom. */
 .label {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--faint);
+  display: inline-block; align-self: flex-start;
+  font-family: var(--font-body); font-weight: 700;
+  font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--paper); background: var(--ink);
+  padding: 0.2rem 0.65rem 0.15rem;
   margin: 0;
+  transform: rotate(-1.5deg);
 }
 
-.lede { font-size: 1.2em; color: var(--dim); }
+.lede { font-size: 1.25em; font-weight: 700; line-height: 1.35; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
 
 /* ── Layout primitives ──────────────────────────────────────────────────── */
 
@@ -122,214 +123,231 @@ p { margin: 0; max-width: var(--measure); }
   margin-inline: auto;
 }
 
-.section {
-  padding-block: clamp(3.5rem, 9vw, 7rem);
-  border-top: 1px solid var(--hairs);
-}
+.section { padding-block: clamp(1.25rem, 3.5vw, 2.5rem); }
 
-.stack { display: flex; flex-direction: column; gap: 1.25rem; }
-.stack-lg { display: flex; flex-direction: column; gap: 2.5rem; }
+.stack { display: flex; flex-direction: column; gap: 1.1rem; }
+.stack-lg { display: flex; flex-direction: column; gap: 2rem; }
+
+/* Paper: every word on the site sits on paper or ink. */
+.paper {
+  background: var(--paper);
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--shadow);
+  padding: clamp(1.25rem, 3.5vw, 2.25rem);
+}
 
 /* ── Site chrome ────────────────────────────────────────────────────────── */
 
 .skip {
   position: absolute; left: -9999px;
-  background: var(--p3); color: var(--bg);
-  padding: 0.5rem 1rem; font-family: var(--font-mono);
+  background: var(--burst); color: var(--ink); font-weight: 700;
+  padding: 0.5rem 1rem; border: var(--line) solid var(--ink);
 }
 .skip:focus { left: 1rem; top: 1rem; z-index: 10; }
 
+.topbar { background: var(--ink); }
+
 .masthead {
-  display: flex; flex-wrap: wrap; gap: 1rem 2rem;
-  align-items: baseline; justify-content: space-between;
-  padding-block: 1.5rem;
-  border-bottom: 1px solid var(--hairs);
+  display: flex; flex-wrap: wrap; gap: 0.75rem 2rem;
+  align-items: center; justify-content: space-between;
+  padding-block: 0.85rem;
 }
 
 .brand { display: inline-flex; align-items: center; text-decoration: none; }
-.brand img { height: 2.4rem; width: auto; display: block; }
+.brand img { height: 1.9rem; width: auto; display: block; }
 
-.nav { display: flex; gap: 1.75rem; font-family: var(--font-mono);
-       font-size: 0.78rem; letter-spacing: 0.18em; text-transform: uppercase; }
-.nav a { color: var(--dim); text-decoration: none; padding-block: 0.25rem; }
-.nav a:hover, .nav a[aria-current="page"] { color: var(--ink); }
-.nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--p2); }
+.nav { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.nav a {
+  font-family: var(--font-display); font-size: 1.1rem; line-height: 1;
+  color: var(--ink); background: var(--paper); text-decoration: none;
+  padding: 0.5rem 0.9rem 0.45rem;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.nav a:hover { background: var(--burst); color: var(--ink); }
+.nav a[aria-current="page"] { background: var(--red); color: var(--paper); }
 
 /* ── Hero ───────────────────────────────────────────────────────────────── */
 
-.hero { position: relative; padding-block: clamp(2rem, 5vw, 4rem) 0; overflow: hidden; }
+.hero { padding-block: clamp(1.25rem, 4vw, 2.75rem) clamp(0.5rem, 2vw, 1.25rem); }
 
-.hero-grid {
-  display: grid;
-  gap: clamp(1.5rem, 4vw, 3rem);
+/* The key art is the hero: it carries the wordmark. */
+.hero-art {
+  margin: 0;
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--shadow);
+  background: var(--orange);
+}
+.hero-art img { width: 100%; }
+
+/* Caption box hung off the bottom of the key art, like a comic panel's. */
+.hero-caption {
+  position: relative;
+  margin: calc(-1 * clamp(1.25rem, 4.5vw, 3.25rem)) auto 0;
+  width: min(100% - 1.5rem, 44rem);
+  text-align: center;
   align-items: center;
 }
-@media (min-width: 900px) {
-  .hero-grid { grid-template-columns: 1fr 1.15fr; }
-}
+.hero-caption p { margin-inline: auto; }
 
-.hero h1 { color: var(--ink); }
+.cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; align-items: center; }
+.hero-caption .cta-row { justify-content: center; }
 
-/* Seat-coloured rule under the wordmark: four players, four bars. */
-.seatbar { display: flex; height: 5px; width: 100%; max-width: 30rem; }
-.seatbar i { flex: 1; }
-.seatbar i:nth-child(1) { background: var(--p1); }
-.seatbar i:nth-child(2) { background: var(--p2); }
-.seatbar i:nth-child(3) { background: var(--p3); }
-.seatbar i:nth-child(4) { background: var(--p4); }
-
-.hero-art { position: relative; }
-.hero-art img {
-  width: 100%;
-  filter: drop-shadow(0 24px 60px rgba(0, 0, 0, 0.85));
-}
-
-.cta-row { display: flex; flex-wrap: wrap; gap: 0.85rem; align-items: center; }
-
+/* Buttons: inked blocks with a hard shadow. Primary is the red block with
+   paper words; hover takes the burst's yellow, like the game's focus. */
 .btn {
   display: inline-flex; align-items: center; gap: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase;
-  padding: 0.85rem 1.5rem;
+  font-family: var(--font-display); font-size: 1.2rem; line-height: 1;
+  padding: 0.8rem 1.4rem 0.75rem;
   text-decoration: none;
-  border: 1px solid var(--hair);
   color: var(--ink);
-  background: var(--panel);
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  background: var(--paper);
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
 }
-.btn:hover { background: var(--raise); border-color: var(--teal); color: var(--ink); }
-.btn:active { transform: translateY(1px); }
+.btn:hover {
+  background: var(--burst); color: var(--ink);
+  transform: translate(-2px, -2px) rotate(-1deg);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
 
-.btn-primary {
-  background: var(--p1); border-color: var(--p1); color: #12040a; font-weight: 700;
-}
-.btn-primary:hover { background: #ff6c82; border-color: #ff6c82; color: #12040a; }
+.btn-primary { background: var(--red); color: var(--paper); font-size: 1.4rem; }
+.btn-primary:hover { background: var(--burst); color: var(--ink); }
 
 .status {
-  font-family: var(--font-mono); font-size: 0.78rem;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint);
+  font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
 }
 
-/* ── Seat panels (the lobby card, reused as a content module) ───────────── */
+/* ── Seat panels ───────────────────────────────────────────────────────── */
 
-.panels {
-  display: grid; gap: 1px;
-  background: var(--hairs);
-  border: 1px solid var(--hairs);
-}
+.panels { display: grid; gap: 1.25rem; }
 @media (min-width: 700px)  { .panels { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1040px) { .panels-4 { grid-template-columns: repeat(4, 1fr); } }
 
 .panel {
-  background: var(--panel);
-  padding: 1.5rem 1.4rem 1.75rem;
-  display: flex; flex-direction: column; gap: 0.7rem;
-  border-top: 3px solid var(--seat, var(--teal));
+  background: var(--paper);
+  border: var(--line) solid var(--ink);
+  border-top: 10px solid var(--seat, var(--orange));
+  box-shadow: var(--shadow);
+  padding: 1.25rem 1.2rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
 }
-.panel h3 { color: var(--seat, var(--ink)); }
-.panel p { color: var(--dim); font-size: 0.98rem; }
-.panel .label { color: var(--seat); opacity: 0.75; }
+.panel p { color: var(--ink-soft); font-size: 0.98rem; }
 
 .seat-1 { --seat: var(--p1); }
 .seat-2 { --seat: var(--p2); }
 .seat-3 { --seat: var(--p3); }
 .seat-4 { --seat: var(--p4); }
 
-/* ── Screenshot strip — letterboxed like the split-screen divide ─────────── */
+/* ── Screenshots: inked comic panels on a paper page ────────────────────── */
 
-.shots { display: grid; gap: 3px; background: #000; padding: 3px; }
+.shots {
+  display: grid; gap: 10px;
+  background: var(--paper);
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--shadow);
+  padding: 10px;
+}
 @media (min-width: 800px) { .shots { grid-template-columns: 1fr 1fr; } }
-.shot { position: relative; margin: 0; }
+.shot { position: relative; margin: 0; border: var(--line) solid var(--ink); background: var(--ink); }
 .shot img { width: 100%; }
 .shot figcaption {
-  position: absolute; left: 0; bottom: 0;
-  font-family: var(--font-mono); font-size: 0.7rem;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--ink);
-  background: rgba(0, 0, 0, 0.66);
-  padding: 0.4rem 0.7rem;
+  position: absolute; left: 0.6rem; bottom: 0.6rem;
+  font-weight: 700; font-size: 0.75rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink); background: var(--burst);
+  border: 2px solid var(--ink);
+  padding: 0.15rem 0.55rem;
 }
 .shot-wide { grid-column: 1 / -1; }
 
-/* ── Split feature block (Bosco) ────────────────────────────────────────── */
+/* ── Romp: the game's animated character sprites, running across the page
+   edges. Decoration only (aria-hidden), paused for reduced motion. ─────── */
 
-.split {
-  display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center;
+.romp { display: grid; gap: 1.25rem; }
+@media (min-width: 800px) { .romp { grid-template-columns: 1fr 1fr; } }
+.romp-panel {
+  border: var(--line) solid var(--ink);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  background-color: var(--orange);
+  background-image: radial-gradient(circle, var(--dot) 0 30%, transparent 33%);
+  background-size: 12px 12px;
+  display: flex; align-items: flex-end; justify-content: center;
 }
+.romp-panel img { width: 100%; }
+
+/* ── Split feature block ───────────────────────────────────────────────── */
+
+.split { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
 @media (min-width: 860px) { .split { grid-template-columns: 0.9fr 1.1fr; } }
-.split-art img { width: 100%; filter: drop-shadow(0 18px 44px rgba(0, 0, 0, 0.8)); }
+.split-art img { width: 100%; }
+
+/* ── Page heads (support, press) ───────────────────────────────────────── */
+
+.page-head .logo { width: min(100%, 24rem); }
 
 /* ── Spec list (press fact sheet) ───────────────────────────────────────── */
 
-.specs { margin: 0; display: grid; gap: 1px; background: var(--hairs);
-         border: 1px solid var(--hairs); }
+.specs { margin: 0; display: grid; border: var(--line) solid var(--ink); border-bottom: 0; }
 @media (min-width: 620px) { .specs { grid-template-columns: auto 1fr; } }
+.specs dt, .specs dd { padding: 0.6rem 0.9rem; border-bottom: 2px solid var(--ink); }
 .specs dt {
-  background: var(--panel); padding: 0.7rem 1rem;
-  font-family: var(--font-mono); font-size: 0.75rem;
-  letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint);
+  font-weight: 700; font-size: 0.8rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: var(--burst);
 }
-.specs dd {
-  background: var(--panel); padding: 0.7rem 1rem; margin: 0; color: var(--dim);
-}
+.specs dd { margin: 0; }
+.specs dd:last-child, .specs dt:nth-last-child(2) { border-bottom-width: var(--line); }
 
 /* ── FAQ ────────────────────────────────────────────────────────────────── */
 
-.faq { display: flex; flex-direction: column; gap: 1px;
-       background: var(--hairs); border: 1px solid var(--hairs); }
+.faq { display: flex; flex-direction: column; gap: 0.9rem; }
 
-.faq details { background: var(--panel); }
+.faq details { background: var(--paper); border: var(--line) solid var(--ink); box-shadow: var(--shadow-sm); }
 .faq summary {
   cursor: pointer; list-style: none;
-  padding: 1.05rem 1.25rem;
-  font-family: var(--font-body); font-weight: 700;
-  font-size: 1.05rem;
+  padding: 0.95rem 1.2rem;
+  font-family: var(--font-display); font-size: 1.2rem;
   display: flex; align-items: baseline; gap: 0.9rem;
 }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::before {
-  content: "+";
-  font-family: var(--font-mono); color: var(--teal);
-  flex: none; width: 1ch;
-}
+.faq summary::before { content: "+"; color: var(--red); flex: none; width: 1ch; }
 .faq details[open] summary::before { content: "\2212"; }
-.faq summary:hover { background: var(--raise); }
-.faq .answer { padding: 0 1.25rem 1.3rem 3.15rem; }
+.faq summary:hover { background: var(--burst); }
+.faq .answer { padding: 0 1.2rem 1.2rem 3.05rem; }
 .faq .answer p + p { margin-top: 0.8rem; }
-.faq .answer p { color: var(--dim); }
-.faq .answer ul { color: var(--dim); margin: 0.6rem 0 0; padding-left: 1.1rem; }
+.faq .answer p, .faq .answer ul { color: var(--ink-soft); }
+.faq .answer ul { margin: 0.6rem 0 0; padding-left: 1.1rem; }
 .faq .answer li + li { margin-top: 0.35rem; }
 
 /* ── Contact card ───────────────────────────────────────────────────────── */
 
-.contact {
-  border: 1px solid var(--hair);
-  background: var(--panel);
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  display: flex; flex-direction: column; gap: 0.9rem;
-}
+.contact { display: flex; flex-direction: column; gap: 0.9rem; }
 .contact .mail {
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 5vw, 3rem);
-  color: var(--p3);
+  font-size: clamp(1.6rem, 5vw, 3rem);
+  line-height: 1.05;
+  color: var(--red);
   text-decoration: none;
-  letter-spacing: 0.02em;
   word-break: break-word;
 }
 .contact .mail:hover { color: var(--ink); }
 
 /* ── Footer ─────────────────────────────────────────────────────────────── */
 
+.footbar { background: var(--ink); color: var(--paper); margin-top: clamp(1.5rem, 4vw, 3rem); }
 .foot {
-  border-top: 1px solid var(--hairs);
-  padding-block: 2.5rem 3.5rem;
+  padding-block: 1.75rem 2.5rem;
   display: flex; flex-wrap: wrap; gap: 1rem 2rem;
   justify-content: space-between; align-items: baseline;
-  font-family: var(--font-mono); font-size: 0.75rem;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint);
+  font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
 }
-.foot a { color: var(--dim); text-decoration: none; }
-.foot a:hover { color: var(--ink); }
+.foot a { color: var(--paper); text-decoration: none; }
+.foot a:hover { color: var(--burst); }
 .foot ul { display: flex; flex-wrap: wrap; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -337,4 +355,6 @@ p { margin: 0; max-width: var(--measure); }
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+  .btn:hover { transform: none; }
+  .romp { display: none; }
 }
