@@ -266,18 +266,9 @@ p { margin: 0; max-width: var(--measure); }
 /* ── Romp: the game's animated character sprites, running across the page
    edges. Decoration only (aria-hidden), paused for reduced motion. ─────── */
 
-.romp { display: grid; gap: 1.25rem; }
+.romp { display: grid; gap: 1.25rem; align-items: center; }
 @media (min-width: 800px) { .romp { grid-template-columns: 1fr 1fr; } }
-.romp-panel {
-  border: var(--line) solid var(--ink);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  background-color: var(--orange);
-  background-image: radial-gradient(circle, var(--dot) 0 30%, transparent 33%);
-  background-size: 12px 12px;
-  display: flex; align-items: flex-end; justify-content: center;
-}
-.romp-panel img { width: 100%; }
+.romp img { width: 100%; }
 
 /* ── Split feature block ───────────────────────────────────────────────── */
 
